@@ -1,10 +1,19 @@
 package com.learntocode;
 
 import java.io.*;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AccountingLedgerApp {
+    private static String DATE_FORMAT = String.valueOf(LocalDate.now());
+    private static String TIME_FORMAT = String.valueOf(LocalTime.now());
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_FORMAT);
     public static void main(String[] args) {
 
     // create new arrayList to pass information to
@@ -62,10 +71,15 @@ public class AccountingLedgerApp {
             while((line = reader.readLine()) != null) {
             String [] parts = line.split("\\|");
             String date = parts[0];
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate date1 = LocalDate.parse(date, formatter);
             String time = parts[1];
+            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("HH:mm:ss");
+            LocalTime time1 = LocalTime.parse(time,formatter1);
             String description = parts[2];
             String vendor = parts[3];
             double amount = Double.parseDouble(parts[4]);
+            ledger.add(new Ledger(date1, time1, description, vendor, amount));
                 }
             } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -284,7 +298,10 @@ public class AccountingLedgerApp {
     }
 
 
+    /*public static void monthToDate(LocalDate startDate, LocalDate endDate) {
 
+        }
+    }*/
 
 
 
