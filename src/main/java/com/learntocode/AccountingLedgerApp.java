@@ -4,6 +4,7 @@ import java.io.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -261,15 +262,19 @@ public class AccountingLedgerApp {
             switch(reportInput){
                 case 1:
                     // Month To Date
+                    monthToDate(LocalDate.of(2023, Month.MAY, 1), LocalDate.now());
                     break;
                 case 2:
                     // Previous Month
+                    previousMonth(LocalDate.of(2023, Month.MAY, 1), LocalDate.of(2023, Month.APRIL, 1));
                     break;
                 case 3:
                     // Year To Date
+                    yearToDate(LocalDate.of(2023, Month.JANUARY, 1), LocalDate.now());
                     break;
                 case 4:
                     // Previous Year
+                    previousYear(LocalDate.of(2023, Month.JANUARY, 1), LocalDate.of(2022, Month.JANUARY, 1));
                     break;
                 case 5:
                     // Search by Vendor
@@ -286,24 +291,66 @@ public class AccountingLedgerApp {
         }
     }
 
+
+    // method for monthToDate report
+    public static void monthToDate(LocalDate startDate, LocalDate endDate) {
+        boolean isBefore = endDate.isBefore(LocalDate.of(2023, Month.JUNE, 1));
+        boolean isAfter = endDate.isAfter(startDate);
+        for(Ledger sheet : getLedger()) {
+        if(isBefore && isAfter) { // if true
+            System.out.printf("%s|%s|%s|%s|$%.2f%n",
+                    sheet.getDate(), sheet.getTime(), sheet.getDescription(), sheet.getVendor(), sheet.getAmount());
+           }
+       }
+    }
+
+    // method for previous month
+    public static void previousMonth(LocalDate startDate, LocalDate endDate) {
+        boolean isBefore = endDate.isBefore(LocalDate.of(2023, Month.MAY, 1));
+        boolean isAfter = endDate.isAfter(LocalDate.of(2023, Month.APRIL, 1));
+        for (Ledger sheet : getLedger()) {
+            if (isBefore && isAfter) { // if true
+                System.out.printf("%s|%s|%s|%s|$%.2f%n",
+                        sheet.getDate(), sheet.getTime(), sheet.getDescription(), sheet.getVendor(), sheet.getAmount());
+            }
+        }
+    }
+
+    // method for year to Date
+    public static void yearToDate(LocalDate startDate, LocalDate endDate) {
+        boolean isBefore = endDate.isBefore(LocalDate.of(2023, Month.JANUARY, 1));
+        boolean isAfter = endDate.isAfter(LocalDate.now());
+        for (Ledger sheet : getLedger()) {
+            if (isBefore && isAfter) { // if true
+                System.out.printf("%s|%s|%s|%s|$%.2f%n",
+                        sheet.getDate(), sheet.getTime(), sheet.getDescription(), sheet.getVendor(), sheet.getAmount());
+            }
+        }
+    }
+
+    // method for previous year
+    public static void previousYear(LocalDate startDate, LocalDate endDate) {
+        boolean isBefore = endDate.isBefore(LocalDate.of(2023, Month.JANUARY, 1));
+        boolean isAfter = endDate.isAfter(LocalDate.of(2022, Month.JANUARY, 1));
+        for (Ledger sheet : getLedger()) {
+            if (isBefore && isAfter) { // if true
+                System.out.printf("%s|%s|%s|%s|$%.2f%n",
+                        sheet.getDate(), sheet.getTime(), sheet.getDescription(), sheet.getVendor(), sheet.getAmount());
+            }
+        }
+    }
+
+    // method for searchByVendor
     public static void searchByVendor(ArrayList<Ledger> ledger, Scanner myScanner) {
         System.out.println("Enter Vendor Name: ");
         String vendor = myScanner.nextLine();
         for (Ledger transaction : ledger) {
-            if(transaction.getVendor().equalsIgnoreCase(vendor)) {
+            if (transaction.getVendor().equalsIgnoreCase(vendor)) {
                 System.out.println(transaction);
                 return;
             }
         }
     }
-
-
-    /*public static void monthToDate(LocalDate startDate, LocalDate endDate) {
-
-        }
-    }*/
-
-
 
 
 
