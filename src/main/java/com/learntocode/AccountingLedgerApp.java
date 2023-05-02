@@ -79,7 +79,7 @@ public class AccountingLedgerApp {
     // make method for adding a new deposit into the csv file
     private static void addDeposit(Scanner myScanner){
         try {
-            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("transactions.csv"));
+            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("transactions.csv",true));// add true to append to file
             System.out.println("Enter all deposit information for new transaction in following format: ");
             System.out.println("date|time|description|vendor|amount");
             String newDeposit = myScanner.nextLine();
@@ -94,7 +94,7 @@ public class AccountingLedgerApp {
     // make method for making a payment and adding it to the csv file
     private static void makePayment(Scanner myScanner){
         try {
-            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("transactions.csv"));
+            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("transactions.csv",true));
             System.out.println("Enter all payment information for new transaction in following format: ");
             System.out.println("date|time|description|vendor|amount");
             String newPayment = myScanner.nextLine();
@@ -138,7 +138,7 @@ public class AccountingLedgerApp {
                     break;
                 case "R":
                     // show reports and do other pre-defined reports and custom search
-
+                    displayReportScreen(myScanner);
                     break;
                 case "H":
                     // go back to home screen
@@ -225,15 +225,63 @@ public class AccountingLedgerApp {
     }
 
 
+    // code to show reports menu
     public static void displayReportScreen(Scanner myScanner){
-        
-
-
-
-
+        int reportInput = -1;
+        while (reportInput!=0){
+            //Display Ledger Screen
+            System.out.println("---------------");
+            System.out.println("Reports Screen");
+            System.out.println("---------------");
+            System.out.println();
+            System.out.println("1) Month To Date");
+            System.out.println("2) Previous Month");
+            System.out.println("3) Year To Date");
+            System.out.println("4) Previous Year");
+            System.out.println("5) Search by Vendor");
+            System.out.println("0) Back to report page");
+            System.out.println("----------------------------------------------------------------------------");
+            reportInput = myScanner.nextInt();
+            myScanner.nextLine();
+            // create switch for Ledger Screen options
+            switch(reportInput){
+                case 1:
+                    // Month To Date
+                    break;
+                case 2:
+                    // Previous Month
+                    break;
+                case 3:
+                    // Year To Date
+                    break;
+                case 4:
+                    // Previous Year
+                    break;
+                case 5:
+                    // Search by Vendor
+                    searchByVendor(getLedger(),myScanner);
+                    break;
+                case 0:
+                    // go back to report page
+                    System.out.println("Going back to Report Page!");
+                    continue; // use continue instead of break in order to go back to report page
+                default:
+                    System.out.println("Invalid input!! Please use on of the above inputs!");
+                    break;
+            }
+        }
     }
 
-
+    public static void searchByVendor(ArrayList<Ledger> ledger, Scanner myScanner) {
+        System.out.println("Enter Vendor Name: ");
+        String vendor = myScanner.nextLine();
+        for (Ledger transaction : ledger) {
+            if(transaction.getVendor().equalsIgnoreCase(vendor)) {
+                System.out.println(transaction);
+                return;
+            }
+        }
+    }
 
 
 
