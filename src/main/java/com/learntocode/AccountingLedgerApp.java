@@ -145,11 +145,11 @@ public class AccountingLedgerApp {
                     break;
                 case "D":
                     // display deposits only
-                    displayDepositsOnly();
+                    displayDepositsOnly(getLedger());
                     break;
                 case "P":
                     // display payments only
-                    displayPaymentsOnly();
+                    displayPaymentsOnly(getLedger());
                     break;
                 case "R":
                     // show reports and do other pre-defined reports and custom search
@@ -185,63 +185,29 @@ public class AccountingLedgerApp {
         }
 
 
-
-    public static void displayDepositsOnly(){
-        ArrayList<Ledger> ledger = new ArrayList<>();
-        String line;
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("transactions.csv"));
-            while((line = reader.readLine()) != null) {
-                String [] parts = line.split("\\|");
-                String date = parts[0];
-                String time = parts[1];
-                String description = parts[2];
-                String vendor = parts[3];
-                double amount = Double.parseDouble(parts[4]);
-                for (Ledger deposit : ledger) {
-                    if(amount > 0) {
-                        System.out.printf("%s|%s|%s|%s|$%.2f%n",
-                                deposit.getDate(), deposit.getTime(), deposit.getDescription(),deposit.getVendor(),deposit.getAmount());
-                    }
-                }
+    // new code for displaying only Deposits
+    public static void displayDepositsOnly(ArrayList<Ledger> ledger){
+        for(Ledger deposit : ledger){
+            if(deposit.getAmount() > 0) {
+                System.out.printf("%s|%s|%s|%s|$%.2f%n",
+                        deposit.getDate(), deposit.getTime(), deposit.getDescription(),deposit.getVendor(),deposit.getAmount());
             }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
 
-    public static void displayPaymentsOnly(){
-        ArrayList<Ledger> ledger = new ArrayList<>();
-        String line;
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("transactions.csv"));
-            while((line = reader.readLine()) != null) {
-                String [] parts = line.split("\\|");
-                String date = parts[0];
-                String time = parts[1];
-                String description = parts[2];
-                String vendor = parts[3];
-                double amount = Double.parseDouble(parts[4]);
-                for (Ledger deposit : ledger) {
-                    if(amount > 0) {
-                        System.out.printf("%s|%s|%s|%s|$%.2f%n",
-                                deposit.getDate(), deposit.getTime(), deposit.getDescription(),deposit.getVendor(),deposit.getAmount());
-                    }
-                }
+    public static void displayPaymentsOnly(ArrayList<Ledger> ledger) {
+        for (Ledger deposit : ledger) {
+            if (deposit.getAmount() < 0) {
+                System.out.printf("%s|%s|%s|%s|$%.2f%n",
+                        deposit.getDate(), deposit.getTime(), deposit.getDescription(), deposit.getVendor(), deposit.getAmount());
             }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
 
     // code to show reports menu
-    public static void displayReportScreen(Scanner myScanner){
+    public static void displayReportScreen(Scanner myScanner) {
         int reportInput = -1;
         while (reportInput!=0){
             //Display Ledger Screen
@@ -257,6 +223,7 @@ public class AccountingLedgerApp {
             System.out.println("6) Custom Search");
             System.out.println("0) Back to report page");
             System.out.println("----------------------------------------------------------------------------");
+            System.out.println("Please enter number for selection:");
             reportInput = myScanner.nextInt();
             myScanner.nextLine();
             // create switch for Ledger Screen options
@@ -357,7 +324,7 @@ public class AccountingLedgerApp {
     }
 
     // method for Custom Search
-    public static void customSearch(ArrayList<Ledger> ledger, Scanner myScanner) {
+    /*public static void customSearch(ArrayList<Ledger> ledger, Scanner myScanner) {
         int searchInput = -1;
         while (searchInput!=0){
             //Display Ledger Screen
@@ -378,12 +345,15 @@ public class AccountingLedgerApp {
             switch(searchInput){
                 case 1:
                     // Start Date search
+                    searchStartDate(getLedger(), myScanner);
                     break;
                 case 2:
                     // End Date search
+                    searchEndDate(getLedger(), myScanner);
                     break;
                 case 3:
                     // Description search
+                    searchByDescription(getLedger(), myScanner);
                     break;
                 case 4:
                     // Vendor
@@ -391,6 +361,7 @@ public class AccountingLedgerApp {
                     break;
                 case 5:
                     // Amount
+                    searchByAmount(getLedger(), myScanner);
                     break;
                 case 0:
                     // go back to report page
@@ -407,13 +378,55 @@ public class AccountingLedgerApp {
     public static void searchStartDate(ArrayList<Ledger> ledger, Scanner myScanner) {
         System.out.println("Enter Start Date: ");
         String userDate = myScanner.nextLine();
-        boolean isEqual = LocalDate.parse(userDate).equals(LocalDate.of(startDate));
-            if (isEqual==true) {
+        boolean isEqual = LocalDate.parse(userDate).equals(LocalDate.of(startDate)); // still need to load the contents into array: cleaner
+        for (Ledger transaction : ledger) {
+            if (isEqual == true) {
+                System.out.printf("%s|%s|%s|%s|$%.2f%n",
+                        transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
+                return;
+            }
+        }
+    }
+
+    public static void searchEndDate(ArrayList<Ledger> ledger, Scanner myScanner) {
+        System.out.println("Enter End Date: ");
+        String userDate = myScanner.nextLine();
+        boolean isEqual = LocalDate.parse(userDate).equals(LocalDate.of(endDate)); // still need to load the contents into array: cleaner
+        for (Ledger transaction : ledger) {
+            if (isEqual == true) {
+                System.out.printf("%s|%s|%s|%s|$%.2f%n",
+                        transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
+                return;
+            }
+        }
+    }
+
+    public static void searchByDescription(ArrayList<Ledger> ledger, Scanner myScanner) {
+        System.out.println("Enter Description Name: ");
+        String description1 = myScanner.nextLine();
+        for (Ledger transaction : ledger) {
+            if (transaction.getDescription().equalsIgnoreCase(description1)) {
                 System.out.println(transaction);
                 return;
             }
-
+        }
     }
+
+
+    public static void searchByAmount(ArrayList<Ledger> ledger, Scanner myScanner) {
+        System.out.println("Enter Amount: ");
+        double amount1 = myScanner.nextDouble();
+        for (Ledger transaction : ledger) {
+            if (Double.parseDouble(transaction.getVendor()) == amount1) {
+                System.out.println(transaction);
+                return;
+            }
+        }
+    } */
+
+
+
+
 
 
 
