@@ -254,6 +254,7 @@ public class AccountingLedgerApp {
             System.out.println("3) Year To Date");
             System.out.println("4) Previous Year");
             System.out.println("5) Search by Vendor");
+            System.out.println("6) Custom Search");
             System.out.println("0) Back to report page");
             System.out.println("----------------------------------------------------------------------------");
             reportInput = myScanner.nextInt();
@@ -280,12 +281,15 @@ public class AccountingLedgerApp {
                     // Search by Vendor
                     searchByVendor(getLedger(),myScanner);
                     break;
+                case 6:
+                    // Custom Search - Start Date, End Date, Description, Vendor, Amount
+                    break;
                 case 0:
                     // go back to report page
                     System.out.println("Going back to Report Page!");
                     continue; // use continue instead of break in order to go back to report page
                 default:
-                    System.out.println("Invalid input!! Please use on of the above inputs!");
+                    System.out.println("Invalid input!! Please use one of the above inputs!");
                     break;
             }
         }
@@ -350,6 +354,65 @@ public class AccountingLedgerApp {
                 return;
             }
         }
+    }
+
+    // method for Custom Search
+    public static void customSearch(ArrayList<Ledger> ledger, Scanner myScanner) {
+        int searchInput = -1;
+        while (searchInput!=0){
+            //Display Ledger Screen
+            System.out.println("---------------");
+            System.out.println("Custom Search Screen");
+            System.out.println("---------------");
+            System.out.println();
+            System.out.println("1) Start Date");
+            System.out.println("2) End Date");
+            System.out.println("3) Description");
+            System.out.println("4) Vendor");
+            System.out.println("5) Amount");
+            System.out.println("0) Back to report page");
+            System.out.println("----------------------------------------------------------------------------");
+            searchInput = myScanner.nextInt();
+            myScanner.nextLine();
+            // create switch for Ledger Screen options
+            switch(searchInput){
+                case 1:
+                    // Start Date search
+                    break;
+                case 2:
+                    // End Date search
+                    break;
+                case 3:
+                    // Description search
+                    break;
+                case 4:
+                    // Vendor
+                    searchByVendor(getLedger(),myScanner);
+                    break;
+                case 5:
+                    // Amount
+                    break;
+                case 0:
+                    // go back to report page
+                    System.out.println("Going back to Report Page!");
+                    continue; // use continue instead of break in order to go back to report page
+                default:
+                    System.out.println("Invalid input!! Please use one of the above inputs!");
+                    break;
+            }
+        }
+    }
+
+
+    public static void searchStartDate(ArrayList<Ledger> ledger, Scanner myScanner) {
+        System.out.println("Enter Start Date: ");
+        String userDate = myScanner.nextLine();
+        boolean isEqual = LocalDate.parse(userDate).equals(LocalDate.of(startDate));
+            if (isEqual==true) {
+                System.out.println(transaction);
+                return;
+            }
+
     }
 
 
