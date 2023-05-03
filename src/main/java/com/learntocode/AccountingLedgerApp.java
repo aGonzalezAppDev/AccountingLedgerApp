@@ -81,12 +81,12 @@ public class AccountingLedgerApp {
             String vendor = parts[3];
             double amount = Double.parseDouble(parts[4]);
             ledger.add(new Ledger(date1, time1, description, vendor, amount));
-                }
-            } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+                    }
+                } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
         return ledger;
     }
@@ -98,8 +98,9 @@ public class AccountingLedgerApp {
             System.out.println("Enter all deposit information for new transaction in following format: ");
             System.out.println("date|time|description|vendor|amount");
             String newDeposit = myScanner.nextLine();
-            bufWriter.write(newDeposit);
-        bufWriter.close();
+            bufWriter.write("\n" + newDeposit);
+            System.out.println("Successfully added new Deposit.");
+            bufWriter.close();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -113,7 +114,8 @@ public class AccountingLedgerApp {
             System.out.println("Enter all payment information for new transaction in following format: ");
             System.out.println("date|time|description|vendor|amount");
             String newPayment = myScanner.nextLine();
-            bufWriter.write(newPayment);
+            bufWriter.write("\n" + newPayment);
+            System.out.println("Successfully added new Payment.");
             bufWriter.close();
 
         } catch (IOException e) {
