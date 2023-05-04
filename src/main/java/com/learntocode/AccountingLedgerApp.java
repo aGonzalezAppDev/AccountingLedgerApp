@@ -37,7 +37,7 @@ public class AccountingLedgerApp {
          System.out.println("---------------");
          choice = myScanner.nextLine(); // save user answer in variable
          // create switch for different cases
-         switch(choice) {
+         switch(choice.toUpperCase()) {
              case "D":
                  // Add Deposit method
                  addDeposit(myScanner);
@@ -106,6 +106,7 @@ public class AccountingLedgerApp {
         }
     }
 
+
     // make method for making a payment and adding it to the csv file = negative transactions
     private static void makePayment(Scanner myScanner){
         try {
@@ -139,7 +140,7 @@ public class AccountingLedgerApp {
             System.out.println("----------------------------------------------------------------------------");
             ledgerInput = myScanner.nextLine();
             // create switch for Ledger Screen options
-            switch(ledgerInput){
+            switch(ledgerInput.toUpperCase()){
                 case "A":
                     // display all entries
                     displayAllEntries();
@@ -161,7 +162,7 @@ public class AccountingLedgerApp {
                     System.out.println("Going back to Home Screen!");
                     break;
                 default:
-                    System.out.println("Invalid input!! Please use on of the above inputs!");
+                    System.out.println("Invalid input!! Please use one of the above inputs!");
                     break;
             }
 
@@ -231,19 +232,19 @@ public class AccountingLedgerApp {
             switch(reportInput){
                 case 1:
                     // Month To Date
-                    monthToDate(LocalDate.of(2023, Month.MAY, 1), LocalDate.now());
+                    monthToDate();
                     break;
                 case 2:
                     // Previous Month
-                    previousMonth(LocalDate.of(2023, Month.MAY, 1), LocalDate.of(2023, Month.APRIL, 1));
+                    previousMonth();
                     break;
                 case 3:
                     // Year To Date
-                    yearToDate(LocalDate.of(2023, Month.JANUARY, 1), LocalDate.now());
+                    yearToDate();
                     break;
                 case 4:
                     // Previous Year
-                    previousYear(LocalDate.of(2023, Month.JANUARY, 1), LocalDate.of(2022, Month.JANUARY, 1));
+                    previousYear();
                     break;
                 case 5:
                     // Search by Vendor
@@ -265,49 +266,48 @@ public class AccountingLedgerApp {
 
 
     // method for monthToDate report
-    public static void monthToDate(LocalDate startDate, LocalDate endDate) {
-        boolean isBefore = endDate.isBefore(LocalDate.of(2023, Month.JUNE, 1));
-        boolean isAfter = endDate.isAfter(startDate);
-        for(Ledger sheet : getLedger()) {
-        if(isBefore && isAfter) { // if true
-            System.out.printf("%s|%s|%s|%s|$%.2f%n",
-                    sheet.getDate(), sheet.getTime(), sheet.getDescription(), sheet.getVendor(), sheet.getAmount());
-           }
-       }
+    public static void monthToDate() {
+        for (Ledger report : getLedger()) {
+            LocalDate date = LocalDate.now();
+
+            if (report.getDate().getMonth() == date.getMonth()) {
+                System.out.printf("%s|%s|%s|%s|$%.2f%n",
+                        report.getDate(), report.getTime(), report.getDescription(), report.getVendor(), report.getAmount());
+            }
+        }
     }
 
     // method for previous month
-    public static void previousMonth(LocalDate startDate, LocalDate endDate) {
-        boolean isBefore = endDate.isBefore(LocalDate.of(2023, Month.MAY, 1));
-        boolean isAfter = endDate.isAfter(LocalDate.of(2023, Month.APRIL, 1));
-        for (Ledger sheet : getLedger()) {
-            if (isBefore && isAfter) { // if true
+    public static void previousMonth() {
+        for (Ledger report : getLedger()) {
+            LocalDate date = LocalDate.now();
+            LocalDate previousMonth = date.minusMonths(1);
+            if (report.getDate().getMonth() == previousMonth.getMonth()) { // if true
                 System.out.printf("%s|%s|%s|%s|$%.2f%n",
-                        sheet.getDate(), sheet.getTime(), sheet.getDescription(), sheet.getVendor(), sheet.getAmount());
+                        report.getDate(), report.getTime(), report.getDescription(), report.getVendor(), report.getAmount());
             }
         }
     }
 
     // method for year to Date
-    public static void yearToDate(LocalDate startDate, LocalDate endDate) {
-        boolean isBefore = endDate.isBefore(LocalDate.of(2023, Month.JANUARY, 1));
-        boolean isAfter = endDate.isAfter(LocalDate.now());
-        for (Ledger sheet : getLedger()) {
-            if (isBefore && isAfter) { // if true
+    public static void yearToDate() {
+        for (Ledger report : getLedger()) {
+            LocalDate date = LocalDate.now();
+            if(report.getDate().getYear() == date.getYear()) {
                 System.out.printf("%s|%s|%s|%s|$%.2f%n",
-                        sheet.getDate(), sheet.getTime(), sheet.getDescription(), sheet.getVendor(), sheet.getAmount());
+                        report.getDate(), report.getTime(), report.getDescription(), report.getVendor(), report.getAmount());
             }
         }
     }
 
     // method for previous year
-    public static void previousYear(LocalDate startDate, LocalDate endDate) {
-        boolean isBefore = endDate.isBefore(LocalDate.of(2023, Month.JANUARY, 1));
-        boolean isAfter = endDate.isAfter(LocalDate.of(2022, Month.JANUARY, 1));
-        for (Ledger sheet : getLedger()) {
-            if (isBefore && isAfter) { // if true
+    public static void previousYear() {
+        for (Ledger report : getLedger()) {
+            LocalDate date = LocalDate.now();
+            LocalDate previousDate = date.minusYears(1);
+            if(report.getDate().getYear() == previousDate.getYear()) {
                 System.out.printf("%s|%s|%s|%s|$%.2f%n",
-                        sheet.getDate(), sheet.getTime(), sheet.getDescription(), sheet.getVendor(), sheet.getAmount());
+                        report.getDate(), report.getTime(), report.getDescription(), report.getVendor(), report.getAmount());
             }
         }
     }
@@ -425,12 +425,6 @@ public class AccountingLedgerApp {
             }
         }
     } */
-
-
-
-
-
-
 
 
 }
