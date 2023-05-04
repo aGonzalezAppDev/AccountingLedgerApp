@@ -3,12 +3,12 @@ package com.learntocode;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AccountingLedgerApp {
+    // creating global variables for Date & Time formatting
     private static String DATE_FORMAT = String.valueOf(LocalDate.now());
     private static String TIME_FORMAT = String.valueOf(LocalTime.now());
 
@@ -19,7 +19,8 @@ public class AccountingLedgerApp {
     // create new arrayList to pass information to
     ArrayList<Ledger> ledger = getLedger();
 
-    Scanner myScanner = new Scanner(System.in); // initialize scanner
+    // initialize scanner
+    Scanner myScanner = new Scanner(System.in);
 
      // create empty string variable for exit (X)
      String choice = "";
@@ -35,7 +36,8 @@ public class AccountingLedgerApp {
          System.out.println("L) Ledger");
          System.out.println("X) Exit");
          System.out.println("---------------");
-         choice = myScanner.nextLine(); // save user answer in variable
+         // save user input in variable
+         choice = myScanner.nextLine();
          // create switch for different cases
          switch(choice.toUpperCase()) {
              case "D":
@@ -51,9 +53,11 @@ public class AccountingLedgerApp {
                  displayLedgerScreen(myScanner);
                  break;
              case "X":
+                 // Close application
                  System.out.println("Exiting Application!!");
                  break;
              default:
+                 // handle bad inputs
                  System.out.println("Invalid input! Please use one of the above inputs!");
                  break;
             }
@@ -71,6 +75,7 @@ public class AccountingLedgerApp {
             while((line = reader.readLine()) != null) {
             String [] parts = line.split("\\|");
             String date = parts[0];
+            // use DateTime formatter to be able to parse into arrayList
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate date1 = LocalDate.parse(date, formatter);
             String time = parts[1];
@@ -90,10 +95,11 @@ public class AccountingLedgerApp {
         return ledger;
     }
 
-    // make method for adding a new deposit into the csv file = positive transaction
+    // make method for adding a new deposit into the csv file = positive transactions
     private static void addDeposit(Scanner myScanner) {
         try {
-            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("transactions.csv", true));// add true to append to file
+            // add true to append to file
+            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
                 System.out.println("Enter all deposit information for new transaction in following format: ");
                 System.out.println("date|time|description|vendor|amount");
                 String newDeposit = myScanner.nextLine();
@@ -123,7 +129,7 @@ public class AccountingLedgerApp {
         }
     }
 
-
+    // method for Ledger Screen
     private static void displayLedgerScreen(Scanner myScanner){
         String ledgerInput = "";
         while (!ledgerInput.equalsIgnoreCase("H")){
@@ -134,7 +140,7 @@ public class AccountingLedgerApp {
             System.out.println();
             System.out.println("A) All - Display all entries.");
             System.out.println("D) Deposits - Display only deposits into account");
-            System.out.println("P) Payments - Display only payments"); // negative entries
+            System.out.println("P) Payments - Display only payments");
             System.out.println("R) Reports - Menu with pre-defined reports or run custom search feature");
             System.out.println("H) Home - go back to home screen");
             System.out.println("----------------------------------------------------------------------------");
@@ -169,10 +175,10 @@ public class AccountingLedgerApp {
         }
     }
 
+    // method for displaying all entries
     public static void displayAllEntries(){
         try {
             BufferedReader reader = new BufferedReader(new FileReader("transactions.csv"));
-
             String input;
             // read all the data in the file
             while (((input = reader.readLine()) != null)) {
@@ -187,7 +193,7 @@ public class AccountingLedgerApp {
         }
 
 
-    // new code for displaying only Deposits
+    // method for displaying only Deposits
     public static void displayDepositsOnly(ArrayList<Ledger> ledger){
         for(Ledger deposit : ledger){
             if(deposit.getAmount() > 0) {
@@ -197,7 +203,7 @@ public class AccountingLedgerApp {
         }
     }
 
-
+    // method for displaying payments only
     public static void displayPaymentsOnly(ArrayList<Ledger> ledger) {
         for (Ledger deposit : ledger) {
             if (deposit.getAmount() < 0) {
@@ -256,7 +262,8 @@ public class AccountingLedgerApp {
                 case 0:
                     // go back to report page
                     System.out.println("Going back to Report Page!");
-                    continue; // use continue instead of break in order to go back to report page
+                    // use continue instead of break in order to go back to report page
+                    continue;
                 default:
                     System.out.println("Invalid input!! Please use one of the above inputs!");
                     break;
@@ -267,10 +274,12 @@ public class AccountingLedgerApp {
 
     // method for monthToDate report
     public static void monthToDate() {
+        // iterate through arrayList
         for (Ledger report : getLedger()) {
+            // create date variable of today's date
             LocalDate date = LocalDate.now();
-
-            if (report.getDate().getMonth() == date.getMonth()) {
+            //get date from file and compare the month to today's with year also
+            if (report.getDate().getMonth() == date.getMonth() && report.getDate().getYear() == date.getYear()) {
                 System.out.printf("%s|%s|%s|%s|$%.2f%n",
                         report.getDate(), report.getTime(), report.getDescription(), report.getVendor(), report.getAmount());
             }
@@ -279,17 +288,21 @@ public class AccountingLedgerApp {
 
     // method for previous month
     public static void previousMonth() {
+        // iterate through
         for (Ledger report : getLedger()) {
+            // today's date
             LocalDate date = LocalDate.now();
+            // variable for today's date, use method to subtract one and for last month
             LocalDate previousMonth = date.minusMonths(1);
-            if (report.getDate().getMonth() == previousMonth.getMonth()) { // if true
+            // comparing file date with last month
+            if (report.getDate().getMonth() == previousMonth.getMonth() && report.getDate().getYear() == date.getYear()) {
                 System.out.printf("%s|%s|%s|%s|$%.2f%n",
                         report.getDate(), report.getTime(), report.getDescription(), report.getVendor(), report.getAmount());
             }
         }
     }
 
-    // method for year to Date
+    // method for year to date
     public static void yearToDate() {
         for (Ledger report : getLedger()) {
             LocalDate date = LocalDate.now();
