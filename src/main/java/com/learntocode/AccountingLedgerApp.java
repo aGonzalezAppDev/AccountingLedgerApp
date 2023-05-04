@@ -1,7 +1,6 @@
 package com.learntocode;
 
 import java.io.*;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
@@ -91,32 +90,32 @@ public class AccountingLedgerApp {
         return ledger;
     }
 
-    // make method for adding a new deposit into the csv file
-    private static void addDeposit(Scanner myScanner){
+    // make method for adding a new deposit into the csv file = positive transaction
+    private static void addDeposit(Scanner myScanner) {
         try {
-            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("transactions.csv",true));// add true to append to file
-            System.out.println("Enter all deposit information for new transaction in following format: ");
-            System.out.println("date|time|description|vendor|amount");
-            String newDeposit = myScanner.nextLine();
-            bufWriter.write("\n" + newDeposit);
-            System.out.println("Successfully added new Deposit.");
-            bufWriter.close();
+            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("transactions.csv", true));// add true to append to file
+                System.out.println("Enter all deposit information for new transaction in following format: ");
+                System.out.println("date|time|description|vendor|amount");
+                String newDeposit = myScanner.nextLine();
+                bufWriter.write("\n" + newDeposit);
+                System.out.println("Successfully added new Deposit.");
+                bufWriter.close();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    // make method for making a payment and adding it to the csv file
+    // make method for making a payment and adding it to the csv file = negative transactions
     private static void makePayment(Scanner myScanner){
         try {
             BufferedWriter bufWriter = new BufferedWriter(new FileWriter("transactions.csv",true));
-            System.out.println("Enter all payment information for new transaction in following format: ");
-            System.out.println("date|time|description|vendor|amount");
-            String newPayment = myScanner.nextLine();
-            bufWriter.write("\n" + newPayment);
-            System.out.println("Successfully added new Payment.");
-            bufWriter.close();
+                System.out.println("Enter all payment information for new transaction in following format: ");
+                System.out.println("date|time|description|vendor|amount");
+                String newPayment = myScanner.nextLine();
+                bufWriter.write("\n" + newPayment);
+                System.out.println("Successfully added new Payment.");
+                bufWriter.close();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -222,7 +221,7 @@ public class AccountingLedgerApp {
             System.out.println("3) Year To Date");
             System.out.println("4) Previous Year");
             System.out.println("5) Search by Vendor");
-            System.out.println("6) Custom Search");
+            //System.out.println("6) Custom Search");
             System.out.println("0) Back to report page");
             System.out.println("----------------------------------------------------------------------------");
             System.out.println("Please enter number for selection:");
@@ -250,9 +249,9 @@ public class AccountingLedgerApp {
                     // Search by Vendor
                     searchByVendor(getLedger(),myScanner);
                     break;
-                case 6:
+                //case 6:
                     // Custom Search - Start Date, End Date, Description, Vendor, Amount
-                    break;
+                    //break;
                 case 0:
                     // go back to report page
                     System.out.println("Going back to Report Page!");
@@ -319,7 +318,8 @@ public class AccountingLedgerApp {
         String vendor = myScanner.nextLine();
         for (Ledger transaction : ledger) {
             if (transaction.getVendor().equalsIgnoreCase(vendor)) {
-                System.out.println(transaction);
+                System.out.printf("%s|%s|%s|%s|$%.2f%n",
+                        transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
                 return;
             }
         }
