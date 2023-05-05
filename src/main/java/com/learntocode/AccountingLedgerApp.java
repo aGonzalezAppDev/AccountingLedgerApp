@@ -228,7 +228,6 @@ public class AccountingLedgerApp {
             System.out.println("3) Year To Date");
             System.out.println("4) Previous Year");
             System.out.println("5) Search by Vendor");
-            //System.out.println("6) Custom Search");
             System.out.println("0) Back to report page");
             System.out.println("----------------------------------------------------------------------------");
             System.out.println("Please enter number for selection:");
@@ -256,9 +255,6 @@ public class AccountingLedgerApp {
                     // Search by Vendor
                     searchByVendor(getLedger(),myScanner);
                     break;
-                //case 6:
-                    // Custom Search - Start Date, End Date, Description, Vendor, Amount
-                    //break;
                 case 0:
                     // go back to report page
                     System.out.println("Going back to Report Page!");
@@ -337,107 +333,5 @@ public class AccountingLedgerApp {
             }
         }
     }
-
-    // method for Custom Search
-    /*public static void customSearch(ArrayList<Ledger> ledger, Scanner myScanner) {
-        int searchInput = -1;
-        while (searchInput!=0){
-            //Display Ledger Screen
-            System.out.println("---------------");
-            System.out.println("Custom Search Screen");
-            System.out.println("---------------");
-            System.out.println();
-            System.out.println("1) Start Date");
-            System.out.println("2) End Date");
-            System.out.println("3) Description");
-            System.out.println("4) Vendor");
-            System.out.println("5) Amount");
-            System.out.println("0) Back to report page");
-            System.out.println("----------------------------------------------------------------------------");
-            searchInput = myScanner.nextInt();
-            myScanner.nextLine();
-            // create switch for Ledger Screen options
-            switch(searchInput){
-                case 1:
-                    // Start Date search
-                    searchStartDate(getLedger(), myScanner);
-                    break;
-                case 2:
-                    // End Date search
-                    searchEndDate(getLedger(), myScanner);
-                    break;
-                case 3:
-                    // Description search
-                    searchByDescription(getLedger(), myScanner);
-                    break;
-                case 4:
-                    // Vendor
-                    searchByVendor(getLedger(),myScanner);
-                    break;
-                case 5:
-                    // Amount
-                    searchByAmount(getLedger(), myScanner);
-                    break;
-                case 0:
-                    // go back to report page
-                    System.out.println("Going back to Report Page!");
-                    continue; // use continue instead of break in order to go back to report page
-                default:
-                    System.out.println("Invalid input!! Please use one of the above inputs!");
-                    break;
-            }
-        }
-    }
-
-
-    public static void searchStartDate(ArrayList<Ledger> ledger, Scanner myScanner) {
-        System.out.println("Enter Start Date: ");
-        String userDate = myScanner.nextLine();
-        boolean isEqual = LocalDate.parse(userDate).equals(LocalDate.of(startDate)); // still need to load the contents into array: cleaner
-        for (Ledger transaction : ledger) {
-            if (isEqual == true) {
-                System.out.printf("%s|%s|%s|%s|$%.2f%n",
-                        transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
-                return;
-            }
-        }
-    }
-
-    public static void searchEndDate(ArrayList<Ledger> ledger, Scanner myScanner) {
-        System.out.println("Enter End Date: ");
-        String userDate = myScanner.nextLine();
-        boolean isEqual = LocalDate.parse(userDate).equals(LocalDate.of(endDate)); // still need to load the contents into array: cleaner
-        for (Ledger transaction : ledger) {
-            if (isEqual == true) {
-                System.out.printf("%s|%s|%s|%s|$%.2f%n",
-                        transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
-                return;
-            }
-        }
-    }
-
-    public static void searchByDescription(ArrayList<Ledger> ledger, Scanner myScanner) {
-        System.out.println("Enter Description Name: ");
-        String description1 = myScanner.nextLine();
-        for (Ledger transaction : ledger) {
-            if (transaction.getDescription().equalsIgnoreCase(description1)) {
-                System.out.println(transaction);
-                return;
-            }
-        }
-    }
-
-
-    public static void searchByAmount(ArrayList<Ledger> ledger, Scanner myScanner) {
-        System.out.println("Enter Amount: ");
-        double amount1 = myScanner.nextDouble();
-        for (Ledger transaction : ledger) {
-            if (Double.parseDouble(transaction.getVendor()) == amount1) {
-                System.out.println(transaction);
-                return;
-            }
-        }
-    } */
-
 
 }
