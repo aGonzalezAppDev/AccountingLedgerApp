@@ -101,7 +101,7 @@ public class AccountingLedgerApp {
             // add true to append to file
             BufferedWriter bufWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
                 System.out.println("Enter all deposit information for new transaction in following format: ");
-                System.out.println("date|time|description|vendor|amount");
+                System.out.println("date|time|description|vendor|amount - Ex:// 2023-04-15|11:15:00|Invoice 2 paid|Joe|100.00");
                 String newDeposit = myScanner.nextLine();
                 bufWriter.write("\n" + newDeposit);
                 System.out.println("Successfully added new Deposit.");
@@ -118,7 +118,7 @@ public class AccountingLedgerApp {
         try {
             BufferedWriter bufWriter = new BufferedWriter(new FileWriter("transactions.csv",true));
                 System.out.println("Enter all payment information for new transaction in following format: ");
-                System.out.println("date|time|description|vendor|amount");
+                System.out.println("date|time|description|vendor|amount - Ex:// 2023-04-15|11:15:00|movie tickets|AMC|-100.00");
                 String newPayment = myScanner.nextLine();
                 bufWriter.write("\n" + newPayment);
                 System.out.println("Successfully added new Payment.");
