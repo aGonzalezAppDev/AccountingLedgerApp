@@ -258,7 +258,6 @@ public class AccountingLedgerApp {
                 case 0:
                     // go back to report page
                     System.out.println("Going back to Report Page!");
-                    // use continue instead of break in order to go back to report page
                     continue;
                 default:
                     System.out.println("Invalid input!! Please use one of the above inputs!");
